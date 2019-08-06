@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Container} from 'semantic-ui-react';
+import {Container, Divider, Table, Header, Icon} from 'semantic-ui-react';
 import axios from './plugins/axios';
 import moment from 'moment';
 
@@ -41,32 +41,48 @@ export default class Story extends Component {
     return (
       <React.Fragment>
         <Container>
-          <div>
-            <span>Title: </span>
-            <span>
-              <a href={item.url}>{item.title}</a>
-            </span>
-          </div>
-          <div>
-            <span>Type: </span>
-            <span>{item.type}</span>
-          </div>
-          <div>
-            <span>By: </span>
-            <span>{item.by}</span>
-          </div>
-          <div>
-            <span>Score: </span>
-            <span>{item.score}</span>
-          </div>
-          <div>
-            <span>Created: </span>
-            <span>{moment.unix(item.time).fromNow()}</span>
-          </div>
-          <div>
-            <span>Number of comments: </span>
-            <span>{item.descendants}</span>
-          </div>
+          <Divider horizontal>
+            <Header as='h4'>
+              <Icon name='info circle' />
+              Details
+            </Header>
+          </Divider>
+
+          <Table definition>
+            <Table.Body>
+              <Table.Row>
+                <Table.Cell width={2}>Title</Table.Cell>
+                <Table.Cell><a href={item.url}>{item.title}</a></Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell>Type</Table.Cell>
+                <Table.Cell>{item.type}</Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell>Author</Table.Cell>
+                <Table.Cell>{item.by}</Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell>Score</Table.Cell>
+                <Table.Cell>{item.score}</Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell>Created</Table.Cell>
+                <Table.Cell>{moment.unix(item.time).fromNow()}</Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell>Comments</Table.Cell>
+                <Table.Cell>{item.descendants}</Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          </Table>
+
+          <Divider horizontal>
+            <Header as='h4'>
+              <Icon name='comments outline' />
+              Comments
+            </Header>
+          </Divider>
         </Container>
       </React.Fragment>
     )
