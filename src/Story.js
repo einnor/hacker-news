@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Container, Divider, Table, Header, Icon} from 'semantic-ui-react';
+import {Container, Divider, Table, Header, Icon, Comment} from 'semantic-ui-react';
 import axios from './plugins/axios';
 import moment from 'moment';
 
@@ -33,11 +33,11 @@ export default class Story extends Component {
     const commentPromises = commentIds.map(this.idToPromise);
     const commentResponses = await Promise.all(commentPromises);
     const comments = commentResponses.map(res => res.data);
-    console.log(comments);
+    this.setState({ comments })
   }
 
   render() {
-    const {item} = this.state;
+    const {item, comments} = this.state;
     return (
       <React.Fragment>
         <Container>
@@ -60,7 +60,7 @@ export default class Story extends Component {
               </Table.Row>
               <Table.Row>
                 <Table.Cell>Author</Table.Cell>
-                <Table.Cell>{item.by}</Table.Cell>
+                <Table.Cell style={{ textTransform: 'capitalize' }}>{item.by}</Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.Cell>Score</Table.Cell>
@@ -77,12 +77,26 @@ export default class Story extends Component {
             </Table.Body>
           </Table>
 
-          <Divider horizontal>
-            <Header as='h4'>
-              <Icon name='comments outline' />
+          <Comment.Group style={{ maxWidth: '100%' }}>
+            <Header as='h3' dividing>
               Comments
             </Header>
-          </Divider>
+
+            {
+              comments.map((comment) => (
+                <Comment key={comment.id}>
+                  <Comment.Avatar src="https://via.placeholder.com/50" />
+                  <Comment.Content>
+                    <Comment.Author as='a' style={{ textTransform: 'capitalize' }}>{comment.by}</Comment.Author>
+                    <Comment.Metadata>
+                      <div>{moment.unix(comment.time).fromNow()}</div>
+                    </Comment.Metadata>
+                    <Comment.Text>{comment.text}</Comment.Text>
+                  </Comment.Content>
+                </Comment>
+              ))
+            }
+          </Comment.Group>
         </Container>
       </React.Fragment>
     )
