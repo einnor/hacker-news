@@ -32,15 +32,12 @@ export default class TopStories extends Component {
         <Container style={{ marginTop: 20 }}>
           {
             isLoading ? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-              <div key={item} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', width: '100%', marginBottom: 20 }}>
-                <Placeholder style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: 50, height: 50, borderRadius: 25 }}>
-                  <Placeholder.Image />
-                </Placeholder>
-                <Placeholder style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: 'calc(100% - 50px)', marginTop: 0, marginLeft: 10 }}>
-                  <Placeholder.Paragraph>
+              <div style={{ borderBottom: '1px solid rgba(0, 0, 0, .3)', paddingBottom: 20, paddingTop: 20 }}>
+                <Placeholder fluid>
+                  <Placeholder.Header image>
                     <Placeholder.Line />
                     <Placeholder.Line />
-                  </Placeholder.Paragraph>
+                  </Placeholder.Header>
                 </Placeholder>
               </div>
             )) : items.map((item) => (
