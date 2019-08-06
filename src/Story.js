@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {Container, Divider, Table, Header, Icon, Comment} from 'semantic-ui-react';
-import axios from './plugins/axios';
 import moment from 'moment';
+import axios from './plugins/axios';
+import Comments from './Comments';
 
-export default class Story extends Component {
+export default class Story extends PureComponent {
   constructor(props) {
     super(props);
     const {id} = props.match.params;
     this.state = {
       id,
       item: {},
-      comments: [],
     };
   }
 
@@ -18,26 +18,14 @@ export default class Story extends Component {
     this.fetchStoryDetails();
   }
 
-  idToPromise = id => axios.get(`item/${id}.json`);
-
-  fetchStoryDetails = async() => {
+  fetchStoryDetails = async () => {
     const {id} = this.state;
     const response = await axios.get(`item/${id}.json`);
     this.setState({ item: response.data });
-
-    this.fetchStoryComments(response.data.kids);
-  }
-
-  fetchStoryComments = async (kids) => {
-    const commentIds = kids.slice(0, 10);
-    const commentPromises = commentIds.map(this.idToPromise);
-    const commentResponses = await Promise.all(commentPromises);
-    const comments = commentResponses.map(res => res.data);
-    this.setState({ comments })
   }
 
   render() {
-    const {item, comments} = this.state;
+    const {item} = this.state;
     return (
       <React.Fragment>
         <Container>
@@ -81,26 +69,10 @@ export default class Story extends Component {
             <Header as='h3' dividing>
               Comments
             </Header>
-
-            {
-              comments.map((comment) => (
-                <Comment key={comment.id}>
-                  <Comment.Avatar src="https://via.placeholder.com/50" />
-                  <Comment.Content>
-                    <Comment.Author as='a' style={{ textTransform: 'capitalize' }}>{comment.by}</Comment.Author>
-                    <Comment.Metadata>
-                      <div>{moment.unix(comment.time).fromNow()}</div>
-                    </Comment.Metadata>
-                    <Comment.Text>{comment.text}</Comment.Text>
-                  </Comment.Content>
-                </Comment>
-              ))
-            }
+            <Comments kids={item.kids}/>
           </Comment.Group>
         </Container>
       </React.Fragment>
     )
   }
 }
-
-// kids: (4) [20623808, 20623712, 20623786, 20623697]
