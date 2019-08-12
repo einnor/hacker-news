@@ -2,15 +2,23 @@ import React, {Component} from 'react';
 import {Container, Placeholder} from 'semantic-ui-react';
 import axios from './plugins/axios';
 import Item from './Item';
+import CustomPagination from './CustomPagination';
 
 export default class TopStories extends Component {
   state = {
+    allIds: [],
     items: [],
+    perPage: 10,
     isLoading: true,
+    activePage: 1,
   };
 
   componentDidMount() {
     this.fetchTopStories();
+  }
+
+  onPaginationChange = (activePage) => {
+    this.setState({ activePage }, this.fetchTopStoryItems());
   }
 
   idToPromise = id => axios.get(`item/${id}.json`);
@@ -18,7 +26,16 @@ export default class TopStories extends Component {
   fetchTopStories = async() => {
     this.setState({ isLoading: true });
     const response = await axios.get('topstories.json');
-    const topStoriesIds = response.data.slice(0, 10);
+    this.setState({ allIds: response.data });
+
+    this.fetchTopStoryItems();
+  }
+
+  // How many items to get
+  fetchTopStoryItems = async () => {
+    const {activePage, perPage, allIds} = this.state;
+    const startingIndex = (activePage - 1) * perPage;
+    const topStoriesIds = allIds.slice(startingIndex, perPage);
     const topStoriesPromises = topStoriesIds.map(this.idToPromise);
     const topStoriesResponses = await Promise.all(topStoriesPromises);
     const topStoriesItems = topStoriesResponses.map(res => res.data);
@@ -26,7 +43,7 @@ export default class TopStories extends Component {
   }
 
   render() {
-    const {items, isLoading} = this.state;
+    const {items, isLoading, allIds, perPage, activePage} = this.state;
     return (
       <React.Fragment>
         <Container style={{ marginTop: 20 }}>
@@ -40,9 +57,16 @@ export default class TopStories extends Component {
                   </Placeholder.Header>
                 </Placeholder>
               </div>
-            )) : items.map((item) => (
-              <Item key={item.id} item={item} />
-            ))
+            )) : (
+              <div>
+                {
+                  items.map((item) => (
+                    <Item key={item.id} item={item} />
+                  ))
+                }
+                <CustomPagination activePage={activePage} totalItems={allIds.length} perPage={perPage} onPaginationChange={this.onPaginationChange} />
+              </div>
+            )
           }
         </Container>
       </React.Fragment>
