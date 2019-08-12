@@ -1,17 +1,15 @@
 import React, { Component } from 'react'
 import { Pagination } from 'semantic-ui-react'
 
-
-// totalItems, perPage, onPaginationChange
 export default class CustomPagination extends Component {
 
   constructor(props) {
     super(props);
 
-    const {totalItems, perPage, activePage} = props;
+    const {totalItems, perPage} = props;
     const totalPages = Math.ceil(totalItems / perPage);
     this.state = {
-      activePage,
+      activePage: 1,
       boundaryRange: 1,
       siblingRange: 1,
       showEllipsis: true,
@@ -39,19 +37,21 @@ export default class CustomPagination extends Component {
 
     return (
       <React.Fragment>
-        <Pagination
-          activePage={activePage}
-          boundaryRange={boundaryRange}
-          onPageChange={this.handlePaginationChange}
-          size='mini'
-          siblingRange={siblingRange}
-          totalPages={totalPages}
-          ellipsisItem={showEllipsis ? undefined : null}
-          firstItem={showFirstAndLastNav ? undefined : null}
-          lastItem={showFirstAndLastNav ? undefined : null}
-          prevItem={showPreviousAndNextNav ? undefined : null}
-          nextItem={showPreviousAndNextNav ? undefined : null}
-        />
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems:'center', justifyContent: 'flex-end', marginTop: 20 }}>
+          <Pagination
+            activePage={activePage}
+            boundaryRange={boundaryRange}
+            onPageChange={this.handlePaginationChange}
+            size='mini'
+            siblingRange={siblingRange}
+            totalPages={totalPages}
+            ellipsisItem={showEllipsis ? undefined : null}
+            firstItem={showFirstAndLastNav ? undefined : null}
+            lastItem={showFirstAndLastNav ? undefined : null}
+            prevItem={showPreviousAndNextNav ? undefined : null}
+            nextItem={showPreviousAndNextNav ? undefined : null}
+          />
+        </div>
       </React.Fragment>
     )
   }
