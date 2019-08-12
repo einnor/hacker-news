@@ -6,10 +6,10 @@ export default class CustomPagination extends Component {
   constructor(props) {
     super(props);
 
-    const {totalItems, perPage} = props;
+    const {totalItems, perPage, activePage} = props;
     const totalPages = Math.ceil(totalItems / perPage);
     this.state = {
-      activePage: 1,
+      activePage,
       boundaryRange: 1,
       siblingRange: 1,
       showEllipsis: true,
@@ -17,6 +17,11 @@ export default class CustomPagination extends Component {
       showPreviousAndNextNav: true,
       totalPages,
     };
+  }
+
+  componentWillReceiveProps(newProps) {
+    const {activePage} = newProps;
+    this.setState({ activePage });
   }
 
   handlePaginationChange = (e, { activePage }) => {
@@ -37,7 +42,7 @@ export default class CustomPagination extends Component {
 
     return (
       <React.Fragment>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems:'center', justifyContent: 'flex-end', marginTop: 20 }}>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems:'center', justifyContent: 'center', marginTop: 20, paddingBottom: 20 }}>
           <Pagination
             activePage={activePage}
             boundaryRange={boundaryRange}

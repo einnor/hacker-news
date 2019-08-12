@@ -9,6 +9,7 @@ export default class TopStories extends Component {
     allIds: [],
     items: [],
     perPage: 10,
+    activePage: 1,
     isLoading: true,
     isLoadingMore: true,
   };
@@ -17,12 +18,12 @@ export default class TopStories extends Component {
     this.fetchTopStories();
   }
 
-  onPaginationChange = async (activePage) => {
-    await this.fetchTopStoryItems(activePage);
+  onPaginationChange = (activePage) => {
+    this.setState({ activePage }, async () => await this.fetchTopStoryItems(activePage))
   }
 
-  getNextItemIds = (activePage) => {
-    const {perPage, allIds} = this.state;
+  getNextItemIds = () => {
+    const {perPage, allIds, activePage} = this.state;
     const startIndex = (activePage - 1) * perPage;
     const endIndex = startIndex + perPage;
     return allIds.slice(startIndex, endIndex);
@@ -36,13 +37,13 @@ export default class TopStories extends Component {
     this.setState({ allIds: response.data });
     this.setState({ isLoading: false });
 
-    this.fetchTopStoryItems(1);
+    this.fetchTopStoryItems();
   }
 
   // How many items to get
-  fetchTopStoryItems = async (activePage) => {
+  fetchTopStoryItems = async () => {
     this.setState({ isLoadingMore: true });
-    const topStoriesIds = this.getNextItemIds(activePage);
+    const topStoriesIds = this.getNextItemIds();
     const topStoriesPromises = topStoriesIds.map(this.idToPromise);
     const topStoriesResponses = await Promise.all(topStoriesPromises);
     const topStoriesItems = topStoriesResponses.map(res => res.data);
@@ -50,13 +51,18 @@ export default class TopStories extends Component {
   }
 
   render() {
-    const {items, isLoading, isLoadingMore, allIds, perPage} = this.state;
+    const {items, isLoading, isLoadingMore, allIds, perPage, activePage} = this.state;
     return (
       <React.Fragment>
         <Container style={{ marginTop: 20 }}>
           {
+            !isLoading ? (
+              <CustomPagination activePage={activePage} totalItems={allIds.length} perPage={perPage} onPaginationChange={this.onPaginationChange} />
+            ) : null
+          }
+          {
             isLoading || isLoadingMore ? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-              <div key={item} style={{ borderBottom: '1px solid rgba(0, 0, 0, .3)', paddingBottom: 20, paddingTop: 20 }}>
+              <div key={item} style={{ borderBottom: '1px solid rgba(0, 0, 0, .3)', paddingTop: 20 }}>
                 <Placeholder fluid>
                   <Placeholder.Header image>
                     <Placeholder.Line />
@@ -70,7 +76,7 @@ export default class TopStories extends Component {
             }
           {
             !isLoading ? (
-              <CustomPagination totalItems={allIds.length} perPage={perPage} onPaginationChange={this.onPaginationChange} />
+              <CustomPagination activePage={activePage} totalItems={allIds.length} perPage={perPage} onPaginationChange={this.onPaginationChange} />
             ) : null
           }
         </Container>
