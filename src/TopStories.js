@@ -19,7 +19,7 @@ export default class TopStories extends Component {
   }
 
   onPaginationChange = (activePage) => {
-    this.setState({ activePage }, async () => await this.fetchTopStoryItems(activePage))
+    this.setState({ activePage }, async () => await this.fetchTopStoryItems())
   }
 
   getNextItemIds = () => {
