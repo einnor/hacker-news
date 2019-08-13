@@ -42,21 +42,19 @@ export default class CustomPagination extends Component {
 
     return (
       <React.Fragment>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems:'center', justifyContent: 'center', marginTop: 20, paddingBottom: 20 }}>
-          <Pagination
-            activePage={activePage}
-            boundaryRange={boundaryRange}
-            onPageChange={this.handlePaginationChange}
-            size='mini'
-            siblingRange={siblingRange}
-            totalPages={totalPages}
-            ellipsisItem={showEllipsis ? undefined : null}
-            firstItem={showFirstAndLastNav ? undefined : null}
-            lastItem={showFirstAndLastNav ? undefined : null}
-            prevItem={showPreviousAndNextNav ? undefined : null}
-            nextItem={showPreviousAndNextNav ? undefined : null}
-          />
-        </div>
+        <Pagination
+          activePage={activePage}
+          boundaryRange={boundaryRange}
+          onPageChange={this.handlePaginationChange}
+          size='mini'
+          siblingRange={siblingRange}
+          totalPages={totalPages}
+          ellipsisItem={showEllipsis ? undefined : null}
+          firstItem={showFirstAndLastNav ? undefined : null}
+          lastItem={showFirstAndLastNav ? undefined : null}
+          prevItem={showPreviousAndNextNav ? undefined : null}
+          nextItem={showPreviousAndNextNav ? undefined : null}
+        />
       </React.Fragment>
     )
   }

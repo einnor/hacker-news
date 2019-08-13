@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {Container, Placeholder} from 'semantic-ui-react';
+import orderBy from 'lodash/orderBy';
 import axios from './plugins/axios';
 import Item from './Item';
 import CustomPagination from './CustomPagination';
+import Filters from './Filters';
 
 export default class TopStories extends Component {
   state = {
@@ -10,6 +12,7 @@ export default class TopStories extends Component {
     items: [],
     perPage: 10,
     activePage: 1,
+    filter: 'time',
     isLoading: true,
     isLoadingMore: true,
   };
@@ -20,6 +23,11 @@ export default class TopStories extends Component {
 
   onPaginationChange = (activePage) => {
     this.setState({ activePage }, async () => await this.fetchTopStoryItems())
+  }
+
+  onFilterChange = (e, {value}) => {
+    const {items} = this.state;
+    this.setState({ fitler: value, items: orderBy(items, [value], ['desc']) });
   }
 
   getNextItemIds = () => {
@@ -42,12 +50,13 @@ export default class TopStories extends Component {
 
   // How many items to get
   fetchTopStoryItems = async () => {
+    const {filter} = this.state;
     this.setState({ isLoadingMore: true });
     const topStoriesIds = this.getNextItemIds();
     const topStoriesPromises = topStoriesIds.map(this.idToPromise);
     const topStoriesResponses = await Promise.all(topStoriesPromises);
     const topStoriesItems = topStoriesResponses.map(res => res.data);
-    this.setState({ items: topStoriesItems, isLoadingMore: false });
+    this.setState({ items: orderBy(topStoriesItems, [filter], ['desc']), isLoadingMore: false });
   }
 
   render() {
@@ -57,7 +66,10 @@ export default class TopStories extends Component {
         <Container style={{ marginTop: 20 }}>
           {
             !isLoading ? (
-              <CustomPagination activePage={activePage} totalItems={allIds.length} perPage={perPage} onPaginationChange={this.onPaginationChange} />
+              <div style={{ display: 'flex', flexDirection: 'row', alignItems:'center', justifyContent: 'space-between', marginTop: 20, paddingBottom: 20, width: '100%' }}>
+                <CustomPagination activePage={activePage} totalItems={allIds.length} perPage={perPage} onPaginationChange={this.onPaginationChange} />
+                <Filters onFilterChange={this.onFilterChange} />
+              </div>
             ) : null
           }
           {
