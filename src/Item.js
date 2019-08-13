@@ -20,7 +20,7 @@ const Item = ({item}) => (
             <Feed.Label style={{ borderRight: '1px solid rgba(0,0,0,.4)', paddingRight: 10 }}>
               by
               &nbsp;
-              <Link to="#" style={{ textTransform: 'capitalize' }}>{item.by}</Link>
+              <Link to={`/user/${item.by}`} style={{ textTransform: 'capitalize' }}>{item.by}</Link>
               &nbsp;
               {moment.unix(item.time).fromNow()}
             </Feed.Label>
