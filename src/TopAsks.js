@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import { Container, Placeholder } from 'semantic-ui-react';
 import Item from './Item';
 import axios from './plugins/axios';
+import CustomPagination from './CustomPagination';
 class TopAsks extends Component {
   state = {
     questions: [],
-    isLoading: true
+    isLoading: true,
+    isLoadingMore: true,
+    activePage: 1,
+    perPage: 10,
+    allIds: []
   };
 
   componentDidMount() {
@@ -15,25 +20,59 @@ class TopAsks extends Component {
   getQuestionDetails = (id) => axios.get(`/item/${id}.json`);
 
   displayTopQuestions = async () => {
+    this.setState({ isLoading: true });
     const response = await axios.get(`/askstories.json`);
     const questionIds = response.data;
-    const questionTopIds = questionIds.slice(0, 10);
+    this.setState({ isLoading: false, allIds: questionIds });
+    this.displayTopQuestionsItems();
+  };
+
+  getNextItemIds = () => {
+    const { activePage, perPage, allIds } = this.state;
+    const startIndex = (activePage - 1) * perPage;
+    const endIndex = startIndex + perPage;
+
+    return allIds.slice(startIndex, endIndex);
+  };
+  displayTopQuestionsItems = async () => {
+    this.setState({ isLoadingMore: true });
+    const questionTopIds = this.getNextItemIds();
     const questionDetails = questionTopIds.map(this.getQuestionDetails);
     const questionPromise = await Promise.all(questionDetails);
     const questions = questionPromise.map((res) => res.data);
-    this.setState({ questions, isLoading: false });
+    this.setState({ questions, isLoadingMore: false });
   };
-
+  onPaginationChange = (activePage) => {
+    this.setState(
+      { activePage },
+      async () => await this.displayTopQuestionsItems()
+    );
+  };
   render() {
-    console.log(this.state.questions);
-    const { questions, isLoading } = this.state;
+    const {
+      questions,
+      isLoading,
+      isLoadingMore,
+      allIds,
+      perPage,
+      activePage
+    } = this.state;
 
     return (
       <React.Fragment>
         <Container style={{ marginTop: 20 }}>
-          {isLoading
+          {!isLoading ? (
+            <CustomPagination
+              activePage={activePage}
+              totalItems={allIds.length}
+              perPage={perPage}
+              onPaginationChange={this.onPaginationChange}
+            />
+          ) : null}
+          {isLoading || isLoadingMore
             ? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
                 <div
+                  key={item}
                   style={{
                     borderBottom: '1px solid rgba(0, 0, 0, .3)',
                     paddingBottom: 20,
@@ -50,6 +89,14 @@ class TopAsks extends Component {
             : questions.map((question) => (
                 <Item key={question.id} item={question} />
               ))}
+          {!isLoading ? (
+            <CustomPagination
+              totalItems={allIds.length}
+              perPage={perPage}
+              activePage={activePage}
+              onPaginationChange={this.onPaginationChange}
+            />
+          ) : null}
         </Container>
       </React.Fragment>
     );
