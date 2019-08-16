@@ -3,6 +3,9 @@ import { Container, Placeholder } from 'semantic-ui-react';
 import Item from './Item';
 import axios from './plugins/axios';
 import CustomPagination from './CustomPagination';
+import Filters from './Filters';
+import Sort from './Sort';
+import orderBy from 'lodash/orderBy';
 class TopAsks extends Component {
   state = {
     questions: [],
@@ -10,7 +13,9 @@ class TopAsks extends Component {
     isLoadingMore: true,
     activePage: 1,
     perPage: 10,
-    allIds: []
+    allIds: [],
+    filter: 'time',
+    sort: 'desc'
   };
 
   componentDidMount() {
@@ -34,19 +39,39 @@ class TopAsks extends Component {
 
     return allIds.slice(startIndex, endIndex);
   };
+
   displayTopQuestionsItems = async () => {
+    const { filter, sort } = this.state;
     this.setState({ isLoadingMore: true });
     const questionTopIds = this.getNextItemIds();
     const questionDetails = questionTopIds.map(this.getQuestionDetails);
     const questionPromise = await Promise.all(questionDetails);
     const questions = questionPromise.map((res) => res.data);
-    this.setState({ questions, isLoadingMore: false });
+    this.setState({
+      questions: orderBy(questions, [filter], [sort]),
+      isLoadingMore: false
+    });
   };
   onPaginationChange = (activePage) => {
     this.setState(
       { activePage },
       async () => await this.displayTopQuestionsItems()
     );
+  };
+
+  onFilterChange = (e, { value }) => {
+    const { questions, sort } = this.state;
+    this.setState({
+      filter: value,
+      questions: orderBy(questions, [value], [sort])
+    });
+  };
+  onSortChange = (e, { value }) => {
+    const { questions, filter } = this.state;
+    this.setState({
+      sort: value,
+      questions: orderBy(questions, [filter], [value])
+    });
   };
   render() {
     const {
@@ -62,12 +87,25 @@ class TopAsks extends Component {
       <React.Fragment>
         <Container style={{ marginTop: 20 }}>
           {!isLoading ? (
-            <CustomPagination
-              activePage={activePage}
-              totalItems={allIds.length}
-              perPage={perPage}
-              onPaginationChange={this.onPaginationChange}
-            />
+            <div
+              style={{
+                display: 'flex',
+                direction: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginTop: 20,
+                paddingBottom: 20,
+                width: '100%'
+              }}>
+              <CustomPagination
+                activePage={activePage}
+                totalItems={allIds.length}
+                perPage={perPage}
+                onPaginationChange={this.onPaginationChange}
+              />
+              <Filters onFilterChange={this.onFilterChange} />
+              <Sort onSortChange={this.onSortChange} />
+            </div>
           ) : null}
           {isLoading || isLoadingMore
             ? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
