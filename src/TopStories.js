@@ -1,19 +1,22 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Placeholder} from 'semantic-ui-react';
 import orderBy from 'lodash/orderBy';
 import axios from './plugins/axios';
 import Item from './Item';
 import CustomPagination from './CustomPagination';
 import Filters from './Filters';
+import Sort from './Sort';
 import AppLayout from './AppLayout';
+import {FiltersContext} from './FiltersContext'
 
-export default class TopStories extends Component {
+export default class TopStories extends PureComponent {
+  static contextType = FiltersContext;
+
   state = {
     allIds: [],
     items: [],
     perPage: 10,
     activePage: 1,
-    filter: 'time',
     isLoading: true,
     isLoadingMore: true,
   };
@@ -28,8 +31,20 @@ export default class TopStories extends Component {
 
   onFilterChange = (e, {value}) => {
     const {items} = this.state;
-    this.setState({ fitler: value, items: orderBy(items, [value], ['desc']) });
+    const {sort, onFiltersChange} = this.context;
+    onFiltersChange({filter: value})
+    this.setState({ fitler: value, items: orderBy(items, [value], [sort]) });
   }
+
+  onSortChange = (e, { value }) => {
+    const { items } = this.state;
+    const {filter, onFiltersChange} = this.context;
+    onFiltersChange({sort: value})
+    this.setState({
+      sort: value,
+      items: orderBy(items, [filter], [value])
+    });
+  };
 
   getNextItemIds = () => {
     const {perPage, allIds, activePage} = this.state;
@@ -51,13 +66,13 @@ export default class TopStories extends Component {
 
   // How many items to get
   fetchTopStoryItems = async () => {
-    const {filter} = this.state;
+    const {filter, sort} = this.context;
     this.setState({ isLoadingMore: true });
     const topStoriesIds = this.getNextItemIds();
     const topStoriesPromises = topStoriesIds.map(this.idToPromise);
     const topStoriesResponses = await Promise.all(topStoriesPromises);
     const topStoriesItems = topStoriesResponses.map(res => res.data);
-    this.setState({ items: orderBy(topStoriesItems, [filter], ['desc']), isLoadingMore: false });
+    this.setState({ items: orderBy(topStoriesItems, [filter], [sort]), isLoadingMore: false });
   }
 
   render() {
@@ -69,6 +84,7 @@ export default class TopStories extends Component {
             <div style={{ display: 'flex', flexDirection: 'row', alignItems:'center', justifyContent: 'space-between', marginTop: 20, paddingBottom: 20, width: '100%' }}>
               <CustomPagination activePage={activePage} totalItems={allIds.length} perPage={perPage} onPaginationChange={this.onPaginationChange} />
               <Filters onFilterChange={this.onFilterChange} />
+              <Sort onSortChange={this.onSortChange} />
             </div>
           ) : null
         }
