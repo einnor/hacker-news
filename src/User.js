@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from './plugins/axios';
 import UserDetails from './UserDetails';
+import AppLayout from './AppLayout';
 
 export default class User extends React.Component {
   state = {
@@ -22,7 +23,7 @@ export default class User extends React.Component {
     const { user } = this.state;
 
     return (
-      <div>
+      <AppLayout>
         <UserDetails
           about={user.about}
           created={user.created}
@@ -30,7 +31,7 @@ export default class User extends React.Component {
           karma={user.karma}
           submitted={user.submitted}
         />
-      </div>
+      </AppLayout>
     );
   }
 }

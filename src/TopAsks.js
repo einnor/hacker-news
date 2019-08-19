@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Container, Placeholder } from 'semantic-ui-react';
+import { Placeholder } from 'semantic-ui-react';
 import Item from './Item';
 import axios from './plugins/axios';
 import CustomPagination from './CustomPagination';
 import Filters from './Filters';
 import Sort from './Sort';
 import orderBy from 'lodash/orderBy';
+import AppLayout from './AppLayout';
 class TopAsks extends Component {
   state = {
     questions: [],
@@ -84,59 +85,57 @@ class TopAsks extends Component {
     } = this.state;
 
     return (
-      <React.Fragment>
-        <Container style={{ marginTop: 20 }}>
-          {!isLoading ? (
-            <div
-              style={{
-                display: 'flex',
-                direction: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginTop: 20,
-                paddingBottom: 20,
-                width: '100%'
-              }}>
-              <CustomPagination
-                activePage={activePage}
-                totalItems={allIds.length}
-                perPage={perPage}
-                onPaginationChange={this.onPaginationChange}
-              />
-              <Filters onFilterChange={this.onFilterChange} />
-              <Sort onSortChange={this.onSortChange} />
-            </div>
-          ) : null}
-          {isLoading || isLoadingMore
-            ? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-                <div
-                  key={item}
-                  style={{
-                    borderBottom: '1px solid rgba(0, 0, 0, .3)',
-                    paddingBottom: 20,
-                    paddingTop: 20
-                  }}>
-                  <Placeholder fluid>
-                    <Placeholder.Header image>
-                      <Placeholder.Line />
-                      <Placeholder.Line />
-                    </Placeholder.Header>
-                  </Placeholder>
-                </div>
-              ))
-            : questions.map((question) => (
-                <Item key={question.id} item={question} />
-              ))}
-          {!isLoading ? (
+      <AppLayout>
+        {!isLoading ? (
+          <div
+            style={{
+              display: 'flex',
+              direction: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginTop: 20,
+              paddingBottom: 20,
+              width: '100%'
+            }}>
             <CustomPagination
+              activePage={activePage}
               totalItems={allIds.length}
               perPage={perPage}
-              activePage={activePage}
               onPaginationChange={this.onPaginationChange}
             />
-          ) : null}
-        </Container>
-      </React.Fragment>
+            <Filters onFilterChange={this.onFilterChange} />
+            <Sort onSortChange={this.onSortChange} />
+          </div>
+        ) : null}
+        {isLoading || isLoadingMore
+          ? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
+              <div
+                key={item}
+                style={{
+                  borderBottom: '1px solid rgba(0, 0, 0, .3)',
+                  paddingBottom: 20,
+                  paddingTop: 20
+                }}>
+                <Placeholder fluid>
+                  <Placeholder.Header image>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Header>
+                </Placeholder>
+              </div>
+            ))
+          : questions.map((question) => (
+              <Item key={question.id} item={question} />
+            ))}
+        {!isLoading ? (
+          <CustomPagination
+            totalItems={allIds.length}
+            perPage={perPage}
+            activePage={activePage}
+            onPaginationChange={this.onPaginationChange}
+          />
+        ) : null}
+      </AppLayout>
     );
   }
 }

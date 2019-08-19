@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {Container, Placeholder} from 'semantic-ui-react';
+import {Placeholder} from 'semantic-ui-react';
 import orderBy from 'lodash/orderBy';
 import axios from './plugins/axios';
 import Item from './Item';
 import CustomPagination from './CustomPagination';
 import Filters from './Filters';
+import AppLayout from './AppLayout';
 
 export default class TopStories extends Component {
   state = {
@@ -62,37 +63,35 @@ export default class TopStories extends Component {
   render() {
     const {items, isLoading, isLoadingMore, allIds, perPage, activePage} = this.state;
     return (
-      <React.Fragment>
-        <Container style={{ marginTop: 20 }}>
-          {
-            !isLoading ? (
-              <div style={{ display: 'flex', flexDirection: 'row', alignItems:'center', justifyContent: 'space-between', marginTop: 20, paddingBottom: 20, width: '100%' }}>
-                <CustomPagination activePage={activePage} totalItems={allIds.length} perPage={perPage} onPaginationChange={this.onPaginationChange} />
-                <Filters onFilterChange={this.onFilterChange} />
-              </div>
-            ) : null
-          }
-          {
-            isLoading || isLoadingMore ? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-              <div key={item} style={{ borderBottom: '1px solid rgba(0, 0, 0, .3)', paddingTop: 20 }}>
-                <Placeholder fluid>
-                  <Placeholder.Header image>
-                    <Placeholder.Line />
-                    <Placeholder.Line />
-                  </Placeholder.Header>
-                </Placeholder>
-              </div>
-            )) : items.map((item) => (
-                <Item key={item.id} item={item} />
-              ))
-            }
-          {
-            !isLoading ? (
+      <AppLayout>
+        {
+          !isLoading ? (
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems:'center', justifyContent: 'space-between', marginTop: 20, paddingBottom: 20, width: '100%' }}>
               <CustomPagination activePage={activePage} totalItems={allIds.length} perPage={perPage} onPaginationChange={this.onPaginationChange} />
-            ) : null
+              <Filters onFilterChange={this.onFilterChange} />
+            </div>
+          ) : null
+        }
+        {
+          isLoading || isLoadingMore ? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
+            <div key={item} style={{ borderBottom: '1px solid rgba(0, 0, 0, .3)', paddingTop: 20 }}>
+              <Placeholder fluid>
+                <Placeholder.Header image>
+                  <Placeholder.Line />
+                  <Placeholder.Line />
+                </Placeholder.Header>
+              </Placeholder>
+            </div>
+          )) : items.map((item) => (
+              <Item key={item.id} item={item} />
+            ))
           }
-        </Container>
-      </React.Fragment>
+        {
+          !isLoading ? (
+            <CustomPagination activePage={activePage} totalItems={allIds.length} perPage={perPage} onPaginationChange={this.onPaginationChange} />
+          ) : null
+        }
+      </AppLayout>
     );
   }
 }
