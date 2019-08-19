@@ -5,7 +5,7 @@ import Nav from './Nav';
 import Story from './Story';
 import TopAsks from './TopAsks.js';
 import ErrorBoundary from './ErrorBoundary';
-import UserDetails from './UserDetails';
+import User from './User';
 
 const App = () => {
   return (
@@ -15,7 +15,7 @@ const App = () => {
         <Route path="/" exact component={TopStories} />
         <Route path="/items/:id" component={Story} />
         <Route path="/ask" component={TopAsks} />
-        <Route path="/user/:id" component={UserDetails} />
+        <Route path="/user/:id" component={User} />
       </ErrorBoundary>
     </React.Fragment>
   );
