@@ -7,7 +7,9 @@ import Filters from './Filters';
 import Sort from './Sort';
 import orderBy from 'lodash/orderBy';
 import AppLayout from './AppLayout';
+import {FiltersContext} from './FiltersContext';
 class TopAsks extends Component {
+  static contextType = FiltersContext;
   state = {
     questions: [],
     isLoading: true,
@@ -15,8 +17,6 @@ class TopAsks extends Component {
     activePage: 1,
     perPage: 10,
     allIds: [],
-    filter: 'time',
-    sort: 'desc'
   };
 
   componentDidMount() {
@@ -42,7 +42,7 @@ class TopAsks extends Component {
   };
 
   displayTopQuestionsItems = async () => {
-    const { filter, sort } = this.state;
+    const { filter, sort } = this.context;
     this.setState({ isLoadingMore: true });
     const questionTopIds = this.getNextItemIds();
     const questionDetails = questionTopIds.map(this.getQuestionDetails);
@@ -61,18 +61,17 @@ class TopAsks extends Component {
   };
 
   onFilterChange = (e, { value }) => {
-    const { questions, sort } = this.state;
-    this.setState({
-      filter: value,
-      questions: orderBy(questions, [value], [sort])
-    });
+    const { questions } = this.state;
+    const { sort, onFiltersChange } = this.context;
+    onFiltersChange({ filter: value });
+    this.setState({ questions: orderBy(questions, [value], [sort]) });
   };
+
   onSortChange = (e, { value }) => {
-    const { questions, filter } = this.state;
-    this.setState({
-      sort: value,
-      questions: orderBy(questions, [filter], [value])
-    });
+    const { questions } = this.state;
+    const { filter, onFiltersChange } = this.context;
+    onFiltersChange({ sort: value });
+    this.setState({ questions: orderBy(questions, [filter], [value]) });
   };
   render() {
     const {

@@ -9,7 +9,7 @@ const options = [
   },
   {
     key: 'desc',
-    text: 'desc',
+    text: 'Desc',
     value: 'desc'
   }
 ];

@@ -7,7 +7,7 @@ import CustomPagination from './CustomPagination';
 import Filters from './Filters';
 import Sort from './Sort';
 import AppLayout from './AppLayout';
-import {FiltersContext} from './FiltersContext'
+import {FiltersContext} from './FiltersContext';
 
 export default class TopStories extends PureComponent {
   static contextType = FiltersContext;
@@ -33,17 +33,14 @@ export default class TopStories extends PureComponent {
     const {items} = this.state;
     const {sort, onFiltersChange} = this.context;
     onFiltersChange({filter: value})
-    this.setState({ fitler: value, items: orderBy(items, [value], [sort]) });
+    this.setState({ items: orderBy(items, [value], [sort]) });
   }
 
   onSortChange = (e, { value }) => {
     const { items } = this.state;
     const {filter, onFiltersChange} = this.context;
     onFiltersChange({sort: value})
-    this.setState({
-      sort: value,
-      items: orderBy(items, [filter], [value])
-    });
+    this.setState({ items: orderBy(items, [filter], [value]) });
   };
 
   getNextItemIds = () => {
