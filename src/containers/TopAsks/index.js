@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Placeholder } from 'semantic-ui-react';
-import Item from './Item';
-import axios from './plugins/axios';
-import CustomPagination from './CustomPagination';
-import Filters from './Filters';
-import Sort from './Sort';
+import Item from '../../components/Item';
+import axios from '../../plugins/axios';
+import CustomPagination from '../../components/CustomPagination';
+import Filters from '../../components/Filters';
+import Sort from '../../components/Sort';
 import orderBy from 'lodash/orderBy';
-import AppLayout from './AppLayout';
-import {FiltersContext} from './FiltersContext';
+import AppLayout from '../../components/AppLayout';
+import {FiltersContext} from '../../context/FiltersContext';
 class TopAsks extends Component {
   static contextType = FiltersContext;
   state = {

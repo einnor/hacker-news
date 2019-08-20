@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import {Divider, Table, Header, Icon, Comment} from 'semantic-ui-react';
 import moment from 'moment';
 import {Link} from 'react-router-dom';
-import axios from './plugins/axios';
-import Comments from './Comments';
-import AppLayout from './AppLayout';
+import axios from '../../plugins/axios';
+import Comments from '../../components/Comments';
+import AppLayout from '../../components/AppLayout';
 
 export default class Story extends PureComponent {
   constructor(props) {

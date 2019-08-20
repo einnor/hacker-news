@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import axios from './plugins/axios';
+import axios from '../plugins/axios';
 import CommentItem from './CommentItem';
 
 export default class Comments extends PureComponent {

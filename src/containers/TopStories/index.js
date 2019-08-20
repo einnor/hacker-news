@@ -1,13 +1,13 @@
 import React, {PureComponent} from 'react';
 import {Placeholder} from 'semantic-ui-react';
 import orderBy from 'lodash/orderBy';
-import axios from './plugins/axios';
-import Item from './Item';
-import CustomPagination from './CustomPagination';
-import Filters from './Filters';
-import Sort from './Sort';
-import AppLayout from './AppLayout';
-import {FiltersContext} from './FiltersContext';
+import axios from '../../plugins/axios';
+import Item from '../../components/Item';
+import CustomPagination from '../../components/CustomPagination';
+import Filters from '../../components/Filters';
+import Sort from '../../components/Sort';
+import AppLayout from '../../components/AppLayout';
+import {FiltersContext} from '../../context/FiltersContext';
 
 export default class TopStories extends PureComponent {
   static contextType = FiltersContext;

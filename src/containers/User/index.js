@@ -1,7 +1,7 @@
 import React from 'react';
-import axios from './plugins/axios';
-import UserDetails from './UserDetails';
-import AppLayout from './AppLayout';
+import axios from '../../plugins/axios';
+import UserDetails from '../../components/UserDetails';
+import AppLayout from '../../components/AppLayout';
 
 export default class User extends React.Component {
   state = {
