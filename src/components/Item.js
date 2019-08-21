@@ -24,12 +24,10 @@ const Item = ({item}) => (
               &nbsp;
               {moment.unix(item.time).fromNow()}
             </Feed.Label>
-            <Feed.Like>
-              <Link to={`/items/${item.id}`}>
-                <Icon name='comments outline' />
-                {item.descendants} comments
-              </Link>
-            </Feed.Like>
+            <Link to={`/items/${item.id}`}>
+              <Icon name='comments outline' />
+              {item.descendants} comments
+            </Link>
           </Feed.Meta>
         </Feed.Content>
       </Feed.Event>

@@ -1,14 +1,24 @@
-import {GET_TOP_STORY_IDS_REQUEST, GET_TOP_STORY_IDS_SUCESS, GET_TOP_STORY_IDS_FAILURE} from './actions';
+import {
+  GET_TOP_STORY_IDS_REQUEST,
+  GET_TOP_STORY_IDS_SUCESS,
+  GET_TOP_STORY_IDS_FAILURE,
+
+  GET_TOP_STORY_ITEMS_REQUEST,
+  GET_TOP_STORY_ITEMS_SUCESS,
+  GET_TOP_STORY_ITEMS_FAILURE,
+} from './actions';
 
 const initialState = {
   ids: [],
   items: [],
   isLoading: false,
+  isLoadingMore: false,
   error: null,
 };
 
 export default function topStories(state = initialState, action) {
   switch (action.type) {
+    // IDS
     case GET_TOP_STORY_IDS_REQUEST:
       return {
         ...state,
@@ -27,6 +37,26 @@ export default function topStories(state = initialState, action) {
         isLoading: false,
         error: action.payload.error
       }
+
+      // ITEMS
+      case GET_TOP_STORY_ITEMS_REQUEST:
+        return {
+          ...state,
+          isLoadingMore: true
+        };
+      case GET_TOP_STORY_ITEMS_SUCESS:
+        return {
+          ...state,
+          items: action.payload.items,
+          isLoadingMore: false,
+          error: null
+        }
+      case GET_TOP_STORY_ITEMS_FAILURE:
+        return {
+          ...state,
+          isLoadingMore: false,
+          error: action.payload.error
+        }
       default:
         return state;
   }

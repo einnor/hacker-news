@@ -1,28 +1,26 @@
 import React, {PureComponent} from 'react';
 import {Placeholder} from 'semantic-ui-react';
 import orderBy from 'lodash/orderBy';
-import axios from '../../plugins/axios';
+import {connect} from 'react-redux';
 import Item from '../../components/Item';
 import CustomPagination from '../../components/CustomPagination';
 import Filters from '../../components/Filters';
 import Sort from '../../components/Sort';
 import AppLayout from '../../components/AppLayout';
 import {FiltersContext} from '../../context/FiltersContext';
+import * as selectors from './store/selectors';
+import {getTopStoryIdsRequest, getTopStoryItemsRequest} from './store/actions';
 
-export default class TopStories extends PureComponent {
+class TopStories extends PureComponent {
   static contextType = FiltersContext;
 
   state = {
-    allIds: [],
-    items: [],
     perPage: 10,
     activePage: 1,
-    isLoading: true,
-    isLoadingMore: true,
   };
 
   componentDidMount() {
-    this.fetchTopStories();
+    this.props.getTopStoryIdsRequest();
   }
 
   onPaginationChange = (activePage) => {
@@ -44,42 +42,32 @@ export default class TopStories extends PureComponent {
   };
 
   getNextItemIds = () => {
-    const {perPage, allIds, activePage} = this.state;
+    const {ids} = this.props;
+    const {perPage, activePage} = this.state;
     const startIndex = (activePage - 1) * perPage;
     const endIndex = startIndex + perPage;
-    return allIds.slice(startIndex, endIndex);
-  }
-
-  idToPromise = id => axios.get(`item/${id}.json`);
-
-  fetchTopStories = async() => {
-    this.setState({ isLoading: true });
-    const response = await axios.get('topstories.json');
-    this.setState({ allIds: response.data });
-    this.setState({ isLoading: false });
-
-    this.fetchTopStoryItems();
+    return ids.slice(startIndex, endIndex);
   }
 
   // How many items to get
   fetchTopStoryItems = async () => {
-    const {filter, sort} = this.context;
-    this.setState({ isLoadingMore: true });
     const topStoriesIds = this.getNextItemIds();
-    const topStoriesPromises = topStoriesIds.map(this.idToPromise);
-    const topStoriesResponses = await Promise.all(topStoriesPromises);
-    const topStoriesItems = topStoriesResponses.map(res => res.data);
-    this.setState({ items: orderBy(topStoriesItems, [filter], [sort]), isLoadingMore: false });
+    if (topStoriesIds.length) {
+      this.props.getTopStoryItemsRequest(topStoriesIds);
+    }
   }
 
   render() {
-    const {items, isLoading, isLoadingMore, allIds, perPage, activePage} = this.state;
+    const {isLoading, isLoadingMore, ids, items} = this.props;
+    const {perPage, activePage} = this.state;
+    const {filter, sort} = this.context;
+    const orderedItems = orderBy(items, [filter], [sort]);
     return (
       <AppLayout>
         {
           !isLoading ? (
             <div style={{ display: 'flex', flexDirection: 'row', alignItems:'center', justifyContent: 'space-between', marginTop: 20, paddingBottom: 20, width: '100%' }}>
-              <CustomPagination activePage={activePage} totalItems={allIds.length} perPage={perPage} onPaginationChange={this.onPaginationChange} />
+              <CustomPagination activePage={activePage} totalItems={ids.length} perPage={perPage} onPaginationChange={this.onPaginationChange} />
               <Filters onFilterChange={this.onFilterChange} />
               <Sort onSortChange={this.onSortChange} />
             </div>
@@ -95,16 +83,31 @@ export default class TopStories extends PureComponent {
                 </Placeholder.Header>
               </Placeholder>
             </div>
-          )) : items.map((item) => (
+          )) : orderedItems.map((item) => (
               <Item key={item.id} item={item} />
             ))
           }
         {
           !isLoading ? (
-            <CustomPagination activePage={activePage} totalItems={allIds.length} perPage={perPage} onPaginationChange={this.onPaginationChange} />
+            <CustomPagination activePage={activePage} totalItems={ids.length} perPage={perPage} onPaginationChange={this.onPaginationChange} />
           ) : null
         }
       </AppLayout>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  isLoading: selectors.getIsLoading(state),
+  isLoadingMore: selectors.getIsLoadingMore(state),
+  ids: selectors.getIds(state),
+  items: selectors.getItems(state),
+  error: selectors.getError(state),
+});
+
+const mapDispatchToProps = {
+  getTopStoryIdsRequest,
+  getTopStoryItemsRequest,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TopStories);
