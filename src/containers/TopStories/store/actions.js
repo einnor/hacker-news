@@ -25,7 +25,7 @@ export function getTopStoryIdsSuccess(ids) {
 export function getTopStoryIdsFailure(error) {
   return {
     type: GET_TOP_STORY_IDS_FAILURE,
-    error: {error}
+    payload: {error}
   };
 }
 
@@ -47,6 +47,6 @@ export function getTopStoryItemsSuccess(items) {
 export function getTopStoryItemsFailure(error) {
   return {
     type: GET_TOP_STORY_ITEMS_FAILURE,
-    error: {error}
+    payload: {error}
   };
 }
