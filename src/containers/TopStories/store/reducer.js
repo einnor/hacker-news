@@ -8,7 +8,7 @@ import {
   GET_TOP_STORY_ITEMS_FAILURE,
 } from './actions';
 
-const initialState = {
+export const initialState = {
   ids: [],
   items: [],
   isLoading: false,
