@@ -1,62 +1,61 @@
 import {
-  GET_TOP_STORY_IDS_REQUEST,
-  GET_TOP_STORY_IDS_SUCESS,
-  GET_TOP_STORY_IDS_FAILURE,
-  GET_TOP_STORY_ITEMS_REQUEST,
-  GET_TOP_STORY_ITEMS_SUCESS,
-  GET_TOP_STORY_ITEMS_FAILURE
+  GET_TOP_ASK_ID_REQUEST,
+  GET_TOP_ASK_ID_SUCCESS,
+  GET_TOP_ASK_ID_FAILURE,
+  GET_TOP_ASK_ITEMS_REQUEST,
+  GET_TOP_ASK_ITEMS_SUCCESS,
+  GET_TOP_ASK_ITEMS_FAILURE
 } from './actions';
 
-export const initialState = {
+const initialState = {
   ids: [],
   items: [],
-  isLoading: false,
-  isLoadingMore: false,
+  isLoading: true,
+  isLoadingMore: true,
   error: null
 };
-
-export default function topStories(state = initialState, action) {
+const topAsks = (state = initialState, action) => {
   switch (action.type) {
-    // IDS
-    case GET_TOP_STORY_IDS_REQUEST:
+    case GET_TOP_ASK_ID_REQUEST:
       return {
         ...state,
         isLoading: true
       };
-    case GET_TOP_STORY_IDS_SUCESS:
+
+    case GET_TOP_ASK_ID_SUCCESS:
       return {
         ...state,
         ids: action.payload.ids,
         isLoading: false,
         error: null
       };
-    case GET_TOP_STORY_IDS_FAILURE:
+    case GET_TOP_ASK_ID_FAILURE:
       return {
         ...state,
         isLoading: false,
         error: action.payload.error
       };
-
-    // ITEMS
-    case GET_TOP_STORY_ITEMS_REQUEST:
+    //ITEMS
+    case GET_TOP_ASK_ITEMS_REQUEST:
       return {
         ...state,
         isLoadingMore: true
       };
-    case GET_TOP_STORY_ITEMS_SUCESS:
+    case GET_TOP_ASK_ITEMS_SUCCESS:
       return {
         ...state,
         items: action.payload.items,
         isLoadingMore: false,
         error: null
       };
-    case GET_TOP_STORY_ITEMS_FAILURE:
+    case GET_TOP_ASK_ITEMS_FAILURE:
       return {
         ...state,
         isLoadingMore: false,
         error: action.payload.error
       };
     default:
-      return state;
+      return initialState;
   }
-}
+};
+export default topAsks;

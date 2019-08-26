@@ -1,87 +1,67 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Placeholder } from 'semantic-ui-react';
 import Item from '../../components/Item';
-import axios from '../../plugins/axios';
 import CustomPagination from '../../components/CustomPagination';
 import Filters from '../../components/Filters';
 import Sort from '../../components/Sort';
 import orderBy from 'lodash/orderBy';
 import AppLayout from '../../components/AppLayout';
-import {FiltersContext} from '../../context/FiltersContext';
-class TopAsks extends Component {
+import { FiltersContext } from '../../context/FiltersContext';
+import { connect } from 'react-redux';
+import * as selectors from './store/selectors';
+import {
+  getTopAskIdRequest,
+  getTopAskItemsRequest
+} from '../TopAsks/store/actions';
+class TopAsks extends PureComponent {
   static contextType = FiltersContext;
   state = {
-    questions: [],
-    isLoading: true,
-    isLoadingMore: true,
     activePage: 1,
-    perPage: 10,
-    allIds: [],
+    perPage: 10
   };
 
   componentDidMount() {
-    this.displayTopQuestions();
+    this.props.getTopAskIdRequest();
   }
 
-  getQuestionDetails = (id) => axios.get(`/item/${id}.json`);
-
-  displayTopQuestions = async () => {
-    this.setState({ isLoading: true });
-    const response = await axios.get(`/askstories.json`);
-    const questionIds = response.data;
-    this.setState({ isLoading: false, allIds: questionIds });
-    this.displayTopQuestionsItems();
-  };
-
-  getNextItemIds = () => {
-    const { activePage, perPage, allIds } = this.state;
-    const startIndex = (activePage - 1) * perPage;
-    const endIndex = startIndex + perPage;
-
-    return allIds.slice(startIndex, endIndex);
-  };
-
-  displayTopQuestionsItems = async () => {
-    const { filter, sort } = this.context;
-    this.setState({ isLoadingMore: true });
-    const questionTopIds = this.getNextItemIds();
-    const questionDetails = questionTopIds.map(this.getQuestionDetails);
-    const questionPromise = await Promise.all(questionDetails);
-    const questions = questionPromise.map((res) => res.data);
-    this.setState({
-      questions: orderBy(questions, [filter], [sort]),
-      isLoadingMore: false
-    });
-  };
   onPaginationChange = (activePage) => {
-    this.setState(
-      { activePage },
-      async () => await this.displayTopQuestionsItems()
-    );
+    this.setState({ activePage }, async () => await this.fetchTopAskItems());
   };
 
   onFilterChange = (e, { value }) => {
-    const { questions } = this.state;
+    const { items } = this.state;
     const { sort, onFiltersChange } = this.context;
     onFiltersChange({ filter: value });
-    this.setState({ questions: orderBy(questions, [value], [sort]) });
+    this.setState({ items: orderBy(items, [value], [sort]) });
   };
 
   onSortChange = (e, { value }) => {
-    const { questions } = this.state;
+    const { items } = this.state;
     const { filter, onFiltersChange } = this.context;
     onFiltersChange({ sort: value });
-    this.setState({ questions: orderBy(questions, [filter], [value]) });
+    this.setState({ items: orderBy(items, [filter], [value]) });
   };
+
+  getNextItemIds = () => {
+    const { ids } = this.props;
+    const { activePage, perPage } = this.state;
+    const startIndex = (activePage - 1) * perPage;
+    const endIndex = startIndex + perPage;
+    return ids.slice(startIndex, endIndex);
+  };
+
+  fetchTopAskItems = async () => {
+    const askTopIds = this.getNextItemIds();
+    if (askTopIds.length) {
+      this.props.getTopAskItemsRequest(askTopIds);
+    }
+  };
+
   render() {
-    const {
-      questions,
-      isLoading,
-      isLoadingMore,
-      allIds,
-      perPage,
-      activePage
-    } = this.state;
+    const { perPage, activePage } = this.state;
+    const { ids, items, isLoading, isLoadingMore } = this.props;
+    const { filter, sort } = this.context;
+    const orderedItems = orderBy(items, [filter], [sort]);
 
     return (
       <AppLayout>
@@ -98,7 +78,7 @@ class TopAsks extends Component {
             }}>
             <CustomPagination
               activePage={activePage}
-              totalItems={allIds.length}
+              totalItems={ids.length}
               perPage={perPage}
               onPaginationChange={this.onPaginationChange}
             />
@@ -123,12 +103,12 @@ class TopAsks extends Component {
                 </Placeholder>
               </div>
             ))
-          : questions.map((question) => (
+          : orderedItems.map((question) => (
               <Item key={question.id} item={question} />
             ))}
         {!isLoading ? (
           <CustomPagination
-            totalItems={allIds.length}
+            totalItems={ids.length}
             perPage={perPage}
             activePage={activePage}
             onPaginationChange={this.onPaginationChange}
@@ -138,4 +118,23 @@ class TopAsks extends Component {
     );
   }
 }
-export default TopAsks;
+
+const mapStateToProps = (state) => {
+  return {
+    isLoading: selectors.getIsLoading(state),
+    ids: selectors.getIds(state),
+    error: selectors.getError(state),
+    isLoadingMore: selectors.getIsLoadingMore(state),
+    items: selectors.getItems(state)
+  };
+};
+
+const mapDispatchToProps = {
+  getTopAskIdRequest,
+  getTopAskItemsRequest
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TopAsks);
