@@ -2,10 +2,9 @@ import {
   GET_TOP_STORY_IDS_REQUEST,
   GET_TOP_STORY_IDS_SUCESS,
   GET_TOP_STORY_IDS_FAILURE,
-
   GET_TOP_STORY_ITEMS_REQUEST,
   GET_TOP_STORY_ITEMS_SUCESS,
-  GET_TOP_STORY_ITEMS_FAILURE,
+  GET_TOP_STORY_ITEMS_FAILURE
 } from './actions';
 
 const initialState = {
@@ -13,7 +12,7 @@ const initialState = {
   items: [],
   isLoading: false,
   isLoadingMore: false,
-  error: null,
+  error: null
 };
 
 export default function topStories(state = initialState, action) {
@@ -30,34 +29,34 @@ export default function topStories(state = initialState, action) {
         ids: action.payload.ids,
         isLoading: false,
         error: null
-      }
+      };
     case GET_TOP_STORY_IDS_FAILURE:
       return {
         ...state,
         isLoading: false,
         error: action.payload.error
-      }
+      };
 
-      // ITEMS
-      case GET_TOP_STORY_ITEMS_REQUEST:
-        return {
-          ...state,
-          isLoadingMore: true
-        };
-      case GET_TOP_STORY_ITEMS_SUCESS:
-        return {
-          ...state,
-          items: action.payload.items,
-          isLoadingMore: false,
-          error: null
-        }
-      case GET_TOP_STORY_ITEMS_FAILURE:
-        return {
-          ...state,
-          isLoadingMore: false,
-          error: action.payload.error
-        }
-      default:
-        return state;
+    // ITEMS
+    case GET_TOP_STORY_ITEMS_REQUEST:
+      return {
+        ...state,
+        isLoadingMore: true
+      };
+    case GET_TOP_STORY_ITEMS_SUCESS:
+      return {
+        ...state,
+        items: action.payload.items,
+        isLoadingMore: false,
+        error: null
+      };
+    case GET_TOP_STORY_ITEMS_FAILURE:
+      return {
+        ...state,
+        isLoadingMore: false,
+        error: action.payload.error
+      };
+    default:
+      return state;
   }
 }

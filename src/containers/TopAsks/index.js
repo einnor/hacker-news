@@ -7,7 +7,10 @@ import Filters from '../../components/Filters';
 import Sort from '../../components/Sort';
 import orderBy from 'lodash/orderBy';
 import AppLayout from '../../components/AppLayout';
-import {FiltersContext} from '../../context/FiltersContext';
+import { FiltersContext } from '../../context/FiltersContext';
+import { connect } from 'react-redux';
+import * as selectors from './store/selectors';
+import { getTopAskIdRequest } from '../TopAsks/store/actions';
 class TopAsks extends Component {
   static contextType = FiltersContext;
   state = {
@@ -16,11 +19,13 @@ class TopAsks extends Component {
     isLoadingMore: true,
     activePage: 1,
     perPage: 10,
-    allIds: [],
+    allIds: []
   };
 
   componentDidMount() {
     this.displayTopQuestions();
+    this.props.getTopAskIdRequest();
+    console.log(this.props.getTopAskIdRequest());
   }
 
   getQuestionDetails = (id) => axios.get(`/item/${id}.json`);
@@ -34,6 +39,9 @@ class TopAsks extends Component {
   };
 
   getNextItemIds = () => {
+    const { ids } = this.props;
+    console.log(ids, 'm<------->');
+
     const { activePage, perPage, allIds } = this.state;
     const startIndex = (activePage - 1) * perPage;
     const endIndex = startIndex + perPage;
@@ -42,6 +50,8 @@ class TopAsks extends Component {
   };
 
   displayTopQuestionsItems = async () => {
+    console.log(this.props.ids, 'ppppppppp');
+
     const { filter, sort } = this.context;
     this.setState({ isLoadingMore: true });
     const questionTopIds = this.getNextItemIds();
@@ -82,6 +92,7 @@ class TopAsks extends Component {
       perPage,
       activePage
     } = this.state;
+    console.log(this.props.ids, 'IDS');
 
     return (
       <AppLayout>
@@ -138,4 +149,19 @@ class TopAsks extends Component {
     );
   }
 }
-export default TopAsks;
+
+const mapStateToProps = (state) => {
+  console.log(selectors.getIds(state), '<><><><><><><>-----<><><>');
+
+  return {
+    isLoading: selectors.getIsLoading(state),
+    ids: selectors.getIds(state),
+    error: selectors.getError(state)
+  };
+};
+
+const mapDispatchToProps = { getTopAskIdRequest };
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TopAsks);
