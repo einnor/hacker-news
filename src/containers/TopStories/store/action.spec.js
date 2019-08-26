@@ -2,6 +2,16 @@ import * as actions from './actions';
 
 describe('Top Stories - Actions', () => {
 
+  let error;
+
+  beforeAll(() => {
+    error = {
+      error: 'Here is an error',
+      message: 'Some error about failure',
+      status: 500
+    };
+  });
+
   // IDS
   describe('IDS', () => {
     it('should get top story ids', () => {
@@ -25,11 +35,6 @@ describe('Top Stories - Actions', () => {
     });
 
     it('should return error on failure', () => {
-      const error = {
-        error: 'Here is an error',
-        message: 'Some error about failure',
-        status: 500
-      };
       const expectedAction = {
         type: actions.GET_TOP_STORY_IDS_FAILURE,
         payload: {error}
@@ -77,11 +82,6 @@ describe('Top Stories - Actions', () => {
     });
 
     it('should return error on failure', () => {
-      const error = {
-        error: 'Here is an error',
-        message: 'Some error about failure',
-        status: 500
-      };
       const expectedAction = {
         type: actions.GET_TOP_STORY_ITEMS_FAILURE,
         payload: {error}
