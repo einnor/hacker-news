@@ -23,7 +23,7 @@ export const getTopAskIdSuccess = (ids) => {
 export const getTopAskIdFailure = (error) => {
   return {
     type: GET_TOP_ASK_ID_FAILURE,
-    error: { error }
+    payload: { error }
   };
 };
 
@@ -40,10 +40,10 @@ export const getTopAskItemsSuccess = (items) => {
     payload: { items }
   };
 };
- 
+
 export const getTopAskItemsFailure = (error) => {
   return {
     type: GET_TOP_ASK_ITEMS_FAILURE,
-    error: { error }
+    payload: { error }
   };
 };

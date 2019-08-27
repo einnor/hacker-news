@@ -25,21 +25,17 @@ class TopAsks extends PureComponent {
   }
 
   onPaginationChange = (activePage) => {
-    this.setState({ activePage }, async () => await this.fetchTopAskItems());
+    this.setState({ activePage }, () => this.fetchTopAskItems());
   };
 
   onFilterChange = (e, { value }) => {
-    const { items } = this.state;
-    const { sort, onFiltersChange } = this.context;
+    const { onFiltersChange } = this.context;
     onFiltersChange({ filter: value });
-    this.setState({ items: orderBy(items, [value], [sort]) });
   };
 
   onSortChange = (e, { value }) => {
-    const { items } = this.state;
-    const { filter, onFiltersChange } = this.context;
+    const { onFiltersChange } = this.context;
     onFiltersChange({ sort: value });
-    this.setState({ items: orderBy(items, [filter], [value]) });
   };
 
   getNextItemIds = () => {
@@ -50,7 +46,7 @@ class TopAsks extends PureComponent {
     return ids.slice(startIndex, endIndex);
   };
 
-  fetchTopAskItems = async () => {
+  fetchTopAskItems = () => {
     const askTopIds = this.getNextItemIds();
     if (askTopIds.length) {
       this.props.getTopAskItemsRequest(askTopIds);

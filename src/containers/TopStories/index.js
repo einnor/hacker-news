@@ -27,27 +27,21 @@ class TopStories extends PureComponent {
   }
 
   onPaginationChange = (activePage) => {
-    this.setState({ activePage }, async () => await this.fetchTopStoryItems());
+    this.setState({ activePage }, () => this.fetchTopStoryItems());
   };
 
   onFilterChange = (e, { value }) => {
-    const { items } = this.state;
-    const { sort, onFiltersChange } = this.context;
+    const { onFiltersChange } = this.context;
     onFiltersChange({ filter: value });
-    this.setState({ items: orderBy(items, [value], [sort]) });
   };
 
   onSortChange = (e, { value }) => {
-    const { items } = this.state;
-    const { filter, onFiltersChange } = this.context;
+    const { onFiltersChange } = this.context;
     onFiltersChange({ sort: value });
-    this.setState({ items: orderBy(items, [filter], [value]) });
   };
 
   getNextItemIds = () => {
     const { ids } = this.props;
-    console.log(ids, 'oooppooo');
-
     const { perPage, activePage } = this.state;
     const startIndex = (activePage - 1) * perPage;
     const endIndex = startIndex + perPage;
@@ -55,7 +49,7 @@ class TopStories extends PureComponent {
   };
 
   // How many items to get
-  fetchTopStoryItems = async () => {
+  fetchTopStoryItems = () => {
     const topStoriesIds = this.getNextItemIds();
     if (topStoriesIds.length) {
       this.props.getTopStoryItemsRequest(topStoriesIds);
