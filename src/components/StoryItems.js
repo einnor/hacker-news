@@ -10,6 +10,11 @@ import { FiltersContext } from '../context/FiltersContext';
 export default class StoryItems extends PureComponent {
   static contextType = FiltersContext;
 
+  state = {
+    perPage: 10,
+    activePage: 1
+  };
+
   onPaginationChange = (activePage) => {
     this.setState({ activePage }, () => this.fetchStoryItems());
   };
@@ -40,14 +45,10 @@ export default class StoryItems extends PureComponent {
   };
 
   render() {
-    const {
-      isLoading,
-      isLoadingMore,
-      activePage,
-      perPage,
-      ids,
-      items
-    } = this.props;
+    const { isLoading, isLoadingMore, ids, items } = this.props;
+
+    const { activePage, perPage } = this.state;
+
     const { filter, sort } = this.context;
     const orderedItems = orderBy(items, [filter], [sort]);
     return (

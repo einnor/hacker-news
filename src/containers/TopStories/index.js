@@ -9,18 +9,12 @@ import {
 import StoryItems from '../../components/StoryItems';
 
 class TopStories extends PureComponent {
-  state = {
-    perPage: 10,
-    activePage: 1
-  };
-
   componentDidMount() {
     this.props.getTopStoryIdsRequest();
   }
 
   render() {
     const { isLoading, isLoadingMore, ids, items } = this.props;
-    const { perPage, activePage } = this.state;
 
     return (
       <AppLayout>
@@ -28,8 +22,6 @@ class TopStories extends PureComponent {
           action={getTopStoryItemsRequest}
           isLoading={isLoading}
           isLoadingMore={isLoadingMore}
-          perPage={perPage}
-          activePage={activePage}
           ids={ids}
           items={items}
         />

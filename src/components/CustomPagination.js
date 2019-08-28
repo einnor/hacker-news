@@ -6,7 +6,6 @@ export default class CustomPagination extends PureComponent {
     super(props);
 
     const { totalItems, perPage, activePage } = props;
-    console.log(totalItems);
     const totalPages = Math.ceil(totalItems / perPage);
     this.state = {
       activePage,

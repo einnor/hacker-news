@@ -3,20 +3,13 @@ import { Container, Divider, Header, Icon } from 'semantic-ui-react';
 import StoryItems from './StoryItems';
 
 export default class Submissions extends PureComponent {
-  state = {
-    perPage: 10,
-    activePage: 1
-  };
-
   render() {
     const {
-      submitted,
       isLoading,
       isLoadingSubmissions,
       submissions,
       getUserSubmissionsRequest
     } = this.props;
-    const { perPage, activePage } = this.state;
     const items = submissions.filter(
       (submission) => submission.type === 'story'
     );
@@ -35,8 +28,6 @@ export default class Submissions extends PureComponent {
             action={getUserSubmissionsRequest}
             isLoading={isLoading}
             isLoadingMore={isLoadingSubmissions}
-            perPage={perPage}
-            activePage={activePage}
             ids={[]}
             items={items}
           />
