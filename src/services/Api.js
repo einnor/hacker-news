@@ -24,4 +24,9 @@ export default class Api {
     const topAsksResponses = await Promise.all(topAsksPromises);
     return topAsksResponses.map((res) => res.data);
   };
+
+  fetchUserDetails = async (by) => {
+    const response = await axios.get(`/user/${by}.json`);
+    return response;
+  };
 }
