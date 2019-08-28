@@ -1,9 +1,8 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import { Container, Divider, Header, Icon } from 'semantic-ui-react';
 import StoryItems from './StoryItems';
 
 export default class Submissions extends PureComponent {
-
   state = {
     perPage: 10,
     activePage: 1
@@ -18,7 +17,9 @@ export default class Submissions extends PureComponent {
       getUserSubmissionsRequest
     } = this.props;
     const { perPage, activePage } = this.state;
-    const items = submissions.filter((submission) => submission.type === 'story');
+    const items = submissions.filter(
+      (submission) => submission.type === 'story'
+    );
 
     return (
       <React.Fragment>
@@ -42,5 +43,5 @@ export default class Submissions extends PureComponent {
         </Container>
       </React.Fragment>
     );
-  };
+  }
 }

@@ -1,12 +1,10 @@
-import {expectSaga} from 'redux-saga-test-plan';
+import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
 import * as actions from './actions';
-import {getTopStoryIds, getTopStoryItems} from './sagas';
+import { getTopStoryIds, getTopStoryItems } from './sagas';
 import Api from '../../../services/Api';
 
-
 describe('Top Stories - Sagas', () => {
-
   const error = {
     error: 'An incoming error',
     message: 'Heads up',
@@ -15,17 +13,14 @@ describe('Top Stories - Sagas', () => {
 
   // IDS
   describe('IDS', () => {
-
     const action = {
       type: actions.GET_TOP_STORY_IDS_REQUEST
     };
 
     it('should handle successfully fetching top story ids', () => {
-      const response = {data: [1, 2, 3]};
+      const response = { data: [1, 2, 3] };
       return expectSaga(getTopStoryIds, action)
-        .provide([
-          [matchers.call(Api.fetchStoryIds, 'topstories'), response]
-        ])
+        .provide([[matchers.call(Api.fetchStoryIds, 'topstories'), response]])
         .put(actions.getTopStoryIdsSuccess(response.data))
         .run();
     });
@@ -33,41 +28,52 @@ describe('Top Stories - Sagas', () => {
     it('should handle unsuccessfully fetching top story ids', () => {
       return expectSaga(getTopStoryIds, action)
         .provide([
-          [matchers.call(Api.fetchStoryIds, 'topstories'), Promise.reject(error)]
+          [
+            matchers.call(Api.fetchStoryIds, 'topstories'),
+            Promise.reject(error)
+          ]
         ])
         .put(actions.getTopStoryIdsFailure(error))
         .run();
-    })
+    });
   });
 
   // ITEMS
   describe('Items', () => {
-
     const ids = [1];
     const action = {
       type: actions.GET_TOP_STORY_ITEMS_REQUEST,
-      payload: {ids}
+      payload: { ids }
     };
 
     it('should handle successfully fetching top story items', () => {
       const response = [
         {
-          by: "bookofjoe",
+          by: 'bookofjoe',
           descendants: 19,
           id: 20786880,
-          kids: [20797976, 20798008, 20798404, 20797657, 20798236, 20797928, 20797970, 20797889, 20797735],
+          kids: [
+            20797976,
+            20798008,
+            20798404,
+            20797657,
+            20798236,
+            20797928,
+            20797970,
+            20797889,
+            20797735
+          ],
           score: 46,
           time: 1566651509,
-          title: "I love my paper dictionary (2017)",
-          type: "story",
-          url: "https://austinkleon.com/2017/08/17/why-i-love-my-paper-dictionary/"
+          title: 'I love my paper dictionary (2017)',
+          type: 'story',
+          url:
+            'https://austinkleon.com/2017/08/17/why-i-love-my-paper-dictionary/'
         }
       ];
 
       return expectSaga(getTopStoryItems, action)
-        .provide([
-          [matchers.call(Api.fetchStoryItems, ids), response]
-        ])
+        .provide([[matchers.call(Api.fetchStoryItems, ids), response]])
         .put(actions.getTopStoryItemsSuccess(response))
         .run();
     });
@@ -79,6 +85,6 @@ describe('Top Stories - Sagas', () => {
         ])
         .put(actions.getTopStoryItemsFailure(error))
         .run();
-    })
-  })
+    });
+  });
 });

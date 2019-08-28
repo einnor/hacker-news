@@ -24,7 +24,15 @@ class TopAsks extends PureComponent {
 
     return (
       <AppLayout>
-        <StoryItems action={getTopAskItemsRequest} isLoading={isLoading} isLoadingMore={isLoadingMore} perPage={perPage} activePage={activePage} ids={ids} items={items} />
+        <StoryItems
+          action={getTopAskItemsRequest}
+          isLoading={isLoading}
+          isLoadingMore={isLoadingMore}
+          perPage={perPage}
+          activePage={activePage}
+          ids={ids}
+          items={items}
+        />
       </AppLayout>
     );
   }

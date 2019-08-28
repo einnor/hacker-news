@@ -7,7 +7,7 @@ import user from '../containers/User/store/reducer';
 const rootReducer = combineReducers({
   topStories,
   topAsks,
-  user,
+  user
 });
 
 export default rootReducer;

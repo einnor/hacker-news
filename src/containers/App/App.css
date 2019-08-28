@@ -2,6 +2,7 @@ html * {
   font: 300 14px/1.4 Roboto, sans-serif;
 }
 
-a:focus, a:active {
+a:focus,
+a:active {
   outline: none;
 }

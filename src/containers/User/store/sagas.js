@@ -3,7 +3,6 @@ import {
   getUserDetailsSuccess,
   getUserDetailsFailure,
   GET_USER_DETAILS_REQUEST,
-
   getUserSubmissionsRequest,
   getUserSubmissionsSuccess,
   getUserSubmissionsFailure,
@@ -19,14 +18,16 @@ export default function* usersWatcher() {
 
 export function* getUserDetails(action) {
   try {
-    const {by} = action.payload;
+    const { by } = action.payload;
     const response = yield call(Api.fetchUserDetails, by);
 
     yield put(getUserDetailsSuccess(response.data));
 
     // Get the first 10 submissions the first time this saga is called, is submitted is not null
     if (response.data.submitted) {
-      yield put(getUserSubmissionsRequest(response.data.submitted.slice(0, 10)));
+      yield put(
+        getUserSubmissionsRequest(response.data.submitted.slice(0, 10))
+      );
     }
   } catch (error) {
     yield put(getUserDetailsFailure(error));
@@ -35,7 +36,7 @@ export function* getUserDetails(action) {
 
 export function* getUserSubmissions(action) {
   try {
-    const {ids} = action.payload;
+    const { ids } = action.payload;
     const response = yield call(Api.fetchStoryItems, ids);
 
     yield put(getUserSubmissionsSuccess(response));
@@ -43,4 +44,3 @@ export function* getUserSubmissions(action) {
     yield put(getUserSubmissionsFailure(error));
   }
 }
-

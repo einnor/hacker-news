@@ -4,7 +4,7 @@ import TopStories from '../TopStories';
 import Story from '../Story';
 import TopAsks from '../TopAsks';
 import User from '../User';
-import {FiltersProvider} from '../../context/FiltersContext';
+import { FiltersProvider } from '../../context/FiltersContext';
 import './App.css';
 
 const App = () => {

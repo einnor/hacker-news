@@ -3,18 +3,30 @@ import { connect } from 'react-redux';
 import UserDetails from '../../components/UserDetails';
 import AppLayout from '../../components/AppLayout';
 import * as selectors from './store/selectors';
-import { getUserDetailsRequest, getUserSubmissionsRequest } from './store/actions';
+import {
+  getUserDetailsRequest,
+  getUserSubmissionsRequest
+} from './store/actions';
 import Submissions from '../../components/Submissions';
 
 class User extends React.Component {
-
   componentDidMount() {
     const by = this.props.match.params.id;
     this.props.getUserDetailsRequest(by);
   }
 
   render() {
-    const { about, created, id, karma, submitted, isLoading, isLoadingSubmissions, submissions, getUserSubmissionsRequest } = this.props;
+    const {
+      about,
+      created,
+      id,
+      karma,
+      submitted,
+      isLoading,
+      isLoadingSubmissions,
+      submissions,
+      getUserSubmissionsRequest
+    } = this.props;
 
     return (
       <AppLayout>
@@ -37,7 +49,7 @@ class User extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoading: selectors.getIsLoading(state),
   id: selectors.getId(state),
   karma: selectors.getKarma(state),
@@ -54,4 +66,7 @@ const mapDispatchToProps = {
   getUserSubmissionsRequest
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(User);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(User);

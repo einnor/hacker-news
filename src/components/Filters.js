@@ -1,23 +1,23 @@
-import React from 'react'
-import { Dropdown } from 'semantic-ui-react'
+import React from 'react';
+import { Dropdown } from 'semantic-ui-react';
 
 const options = [
   {
     key: 'time',
     text: 'Date Published',
-    value: 'time',
+    value: 'time'
   },
   {
     key: 'score',
     text: 'Article Rank',
-    value: 'score',
+    value: 'score'
   },
   {
     key: 'descendants',
     text: 'Comments',
-    value: 'descendants',
-  },
-]
+    value: 'descendants'
+  }
+];
 
 const Filters = ({ onFilterChange }) => (
   <span>

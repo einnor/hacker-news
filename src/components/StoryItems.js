@@ -1,14 +1,13 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import orderBy from 'lodash/orderBy';
 import CustomPagination from './CustomPagination';
 import Filters from './Filters';
 import Sort from './Sort';
 import Item from './Item';
-import {Placeholder} from 'semantic-ui-react';
+import { Placeholder } from 'semantic-ui-react';
 import { FiltersContext } from '../context/FiltersContext';
 
 export default class StoryItems extends PureComponent {
-
   static contextType = FiltersContext;
 
   onPaginationChange = (activePage) => {
@@ -41,7 +40,14 @@ export default class StoryItems extends PureComponent {
   };
 
   render() {
-    const { isLoading, isLoadingMore, activePage, perPage, ids, items } = this.props;
+    const {
+      isLoading,
+      isLoadingMore,
+      activePage,
+      perPage,
+      ids,
+      items
+    } = this.props;
     const { filter, sort } = this.context;
     const orderedItems = orderBy(items, [filter], [sort]);
     return (
@@ -56,7 +62,8 @@ export default class StoryItems extends PureComponent {
               marginTop: 20,
               paddingBottom: 20,
               width: '100%'
-            }}>
+            }}
+          >
             <CustomPagination
               activePage={activePage}
               totalItems={ids.length}
@@ -74,7 +81,8 @@ export default class StoryItems extends PureComponent {
                 style={{
                   borderBottom: '1px solid rgba(0, 0, 0, .3)',
                   paddingTop: 20
-                }}>
+                }}
+              >
                 <Placeholder fluid>
                   <Placeholder.Header image>
                     <Placeholder.Line />
@@ -93,6 +101,6 @@ export default class StoryItems extends PureComponent {
           />
         ) : null}
       </React.Fragment>
-    )
+    );
   }
 }

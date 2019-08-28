@@ -26,9 +26,7 @@ const UserDetails = ({ created, id, karma, about }) => {
             </Table.Row>
             <Table.Row>
               <Table.Cell>Created:</Table.Cell>
-              <Table.Cell>
-                {moment.unix(created).format('LLLL')}
-              </Table.Cell>
+              <Table.Cell>{moment.unix(created).format('LLLL')}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Karma:</Table.Cell>
@@ -38,8 +36,10 @@ const UserDetails = ({ created, id, karma, about }) => {
               <Table.Cell width={2}>About:</Table.Cell>
               <Table.Cell>
                 {about ? (
-                  <div dangerouslySetInnerHTML={{__html: sanitizer(about)}} />
-                ) : '--'}
+                  <div dangerouslySetInnerHTML={{ __html: sanitizer(about) }} />
+                ) : (
+                  '--'
+                )}
               </Table.Cell>
             </Table.Row>
           </Table.Body>

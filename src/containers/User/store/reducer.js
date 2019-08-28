@@ -2,10 +2,9 @@ import {
   GET_USER_DETAILS_REQUEST,
   GET_USER_DETAILS_SUCCESS,
   GET_USER_DETAILS_FAILURE,
-
   GET_USER_SUBMISSIONS_REQUEST,
   GET_USER_SUBMISSIONS_SUCCESS,
-  GET_USER_SUBMISSIONS_FAILURE,
+  GET_USER_SUBMISSIONS_FAILURE
 } from './actions';
 
 export const initialState = {
@@ -42,8 +41,8 @@ export default function topStories(state = initialState, action) {
         error: action.payload.error
       };
 
-      // User submissions
-      case GET_USER_SUBMISSIONS_REQUEST:
+    // User submissions
+    case GET_USER_SUBMISSIONS_REQUEST:
       return {
         ...state,
         isLoadingSubmissions: true

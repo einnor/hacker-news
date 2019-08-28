@@ -9,7 +9,6 @@ import {
 import StoryItems from '../../components/StoryItems';
 
 class TopStories extends PureComponent {
-
   state = {
     perPage: 10,
     activePage: 1
@@ -25,7 +24,15 @@ class TopStories extends PureComponent {
 
     return (
       <AppLayout>
-        <StoryItems action={getTopStoryItemsRequest} isLoading={isLoading} isLoadingMore={isLoadingMore} perPage={perPage} activePage={activePage} ids={ids} items={items} />
+        <StoryItems
+          action={getTopStoryItemsRequest}
+          isLoading={isLoading}
+          isLoadingMore={isLoadingMore}
+          perPage={perPage}
+          activePage={activePage}
+          ids={ids}
+          items={items}
+        />
       </AppLayout>
     );
   }

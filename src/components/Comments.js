@@ -6,10 +6,10 @@ export default class Comments extends PureComponent {
   constructor(props) {
     super(props);
 
-    const {kids} = props;
+    const { kids } = props;
     this.state = {
       kids: kids || [],
-      comments: [],
+      comments: []
     };
   }
 
@@ -23,33 +23,31 @@ export default class Comments extends PureComponent {
   }
 
   componentDidMount() {
-    const {kids} = this.props;
+    const { kids } = this.props;
     if (kids && kids.length) {
       this.fetchStoryComments();
     }
   }
 
-  idToPromise = id => axios.get(`item/${id}.json`);
+  idToPromise = (id) => axios.get(`item/${id}.json`);
 
   fetchStoryComments = async () => {
-    const {kids} = this.state;
+    const { kids } = this.state;
     const commentIds = kids.slice(0, 10);
     const commentPromises = commentIds.map(this.idToPromise);
     const commentResponses = await Promise.all(commentPromises);
-    const comments = commentResponses.map(res => res.data);
+    const comments = commentResponses.map((res) => res.data);
     this.setState({ comments });
-  }
+  };
 
   render() {
-    const {comments} = this.state;
+    const { comments } = this.state;
     return (
       <React.Fragment>
-        {
-          comments.map((comment) => (
-            <CommentItem key={comment.id} comment={comment} />
-          ))
-        }
+        {comments.map((comment) => (
+          <CommentItem key={comment.id} comment={comment} />
+        ))}
       </React.Fragment>
-    )
+    );
   }
 }

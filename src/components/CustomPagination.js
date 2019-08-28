@@ -1,12 +1,11 @@
-import React, { PureComponent } from 'react'
-import { Pagination } from 'semantic-ui-react'
+import React, { PureComponent } from 'react';
+import { Pagination } from 'semantic-ui-react';
 
 export default class CustomPagination extends PureComponent {
-
   constructor(props) {
     super(props);
 
-    const {totalItems, perPage, activePage} = props;
+    const { totalItems, perPage, activePage } = props;
     console.log(totalItems);
     const totalPages = Math.ceil(totalItems / perPage);
     this.state = {
@@ -16,19 +15,19 @@ export default class CustomPagination extends PureComponent {
       showEllipsis: true,
       showFirstAndLastNav: true,
       showPreviousAndNextNav: true,
-      totalPages,
+      totalPages
     };
   }
 
   componentWillReceiveProps(newProps) {
-    const {activePage} = newProps;
+    const { activePage } = newProps;
     this.setState({ activePage });
   }
 
   handlePaginationChange = (e, { activePage }) => {
     const { onPaginationChange } = this.props;
     this.setState({ activePage }, () => onPaginationChange(activePage));
-  }
+  };
 
   render() {
     const {
@@ -38,8 +37,8 @@ export default class CustomPagination extends PureComponent {
       showEllipsis,
       showFirstAndLastNav,
       showPreviousAndNextNav,
-      totalPages,
-    } = this.state
+      totalPages
+    } = this.state;
 
     if (totalPages < 1) {
       return null;
@@ -51,7 +50,7 @@ export default class CustomPagination extends PureComponent {
           activePage={activePage}
           boundaryRange={boundaryRange}
           onPageChange={this.handlePaginationChange}
-          size='mini'
+          size="mini"
           siblingRange={siblingRange}
           totalPages={totalPages}
           ellipsisItem={showEllipsis ? undefined : null}
@@ -61,6 +60,6 @@ export default class CustomPagination extends PureComponent {
           nextItem={showPreviousAndNextNav ? undefined : null}
         />
       </React.Fragment>
-    )
+    );
   }
 }

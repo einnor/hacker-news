@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import {Divider, Table, Header, Icon, Comment} from 'semantic-ui-react';
+import { Divider, Table, Header, Icon, Comment } from 'semantic-ui-react';
 import moment from 'moment';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from '../../plugins/axios';
 import Comments from '../../components/Comments';
 import AppLayout from '../../components/AppLayout';
@@ -9,10 +9,10 @@ import AppLayout from '../../components/AppLayout';
 export default class Story extends PureComponent {
   constructor(props) {
     super(props);
-    const {id} = props.match.params;
+    const { id } = props.match.params;
     this.state = {
       id,
-      item: {},
+      item: {}
     };
   }
 
@@ -21,18 +21,18 @@ export default class Story extends PureComponent {
   }
 
   fetchStoryDetails = async () => {
-    const {id} = this.state;
+    const { id } = this.state;
     const response = await axios.get(`item/${id}.json`);
     this.setState({ item: response.data });
-  }
+  };
 
   render() {
-    const {item} = this.state;
+    const { item } = this.state;
     return (
       <AppLayout>
         <Divider horizontal>
-          <Header as='h4'>
-            <Icon name='info circle' />
+          <Header as="h4">
+            <Icon name="info circle" />
             Details
           </Header>
         </Divider>
@@ -41,7 +41,9 @@ export default class Story extends PureComponent {
           <Table.Body>
             <Table.Row>
               <Table.Cell width={2}>Title</Table.Cell>
-              <Table.Cell><a href={item.url}>{item.title}</a></Table.Cell>
+              <Table.Cell>
+                <a href={item.url}>{item.title}</a>
+              </Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Type</Table.Cell>
@@ -50,9 +52,7 @@ export default class Story extends PureComponent {
             <Table.Row>
               <Table.Cell>Author</Table.Cell>
               <Table.Cell style={{ textTransform: 'capitalize' }}>
-                <Link to={`/user/${item.by}`}>
-                  {item.by}
-                </Link>
+                <Link to={`/user/${item.by}`}>{item.by}</Link>
               </Table.Cell>
             </Table.Row>
             <Table.Row>
@@ -71,12 +71,12 @@ export default class Story extends PureComponent {
         </Table>
 
         <Comment.Group style={{ maxWidth: '100%' }}>
-          <Header as='h3' dividing>
+          <Header as="h3" dividing>
             Comments
           </Header>
-          <Comments kids={item.kids}/>
+          <Comments kids={item.kids} />
         </Comment.Group>
       </AppLayout>
-    )
+    );
   }
 }

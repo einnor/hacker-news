@@ -1,32 +1,24 @@
 import React from 'react';
-import {Menu, Container} from 'semantic-ui-react';
-import {Link} from 'react-router-dom';
+import { Menu, Container } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 const Nav = () => {
   return (
     <Container>
       <Menu stackable>
+        <Menu.Item>Hacker News</Menu.Item>
         <Menu.Item>
-          Hacker News
+          <Link to="/">Top</Link>
         </Menu.Item>
         <Menu.Item>
-          <Link to="/">
-            Top
-          </Link>
+          <Link to="/ask">Ask</Link>
         </Menu.Item>
         <Menu.Item>
-          <Link to="/ask">
-            Ask
-          </Link>
-        </Menu.Item>
-        <Menu.Item>
-          <Link to="/jobs">
-            Jobs
-          </Link>
+          <Link to="/jobs">Jobs</Link>
         </Menu.Item>
       </Menu>
     </Container>
-  )
+  );
 };
 
 export default Nav;
