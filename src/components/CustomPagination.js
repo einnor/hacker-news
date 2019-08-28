@@ -1,12 +1,13 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Pagination } from 'semantic-ui-react'
 
-export default class CustomPagination extends Component {
+export default class CustomPagination extends PureComponent {
 
   constructor(props) {
     super(props);
 
     const {totalItems, perPage, activePage} = props;
+    console.log(totalItems);
     const totalPages = Math.ceil(totalItems / perPage);
     this.state = {
       activePage,
@@ -39,6 +40,10 @@ export default class CustomPagination extends Component {
       showPreviousAndNextNav,
       totalPages,
     } = this.state
+
+    if (totalPages < 1) {
+      return null;
+    }
 
     return (
       <React.Fragment>

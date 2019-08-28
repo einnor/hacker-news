@@ -18,7 +18,7 @@ export default function* topAsksWatcher() {
 
 export function* getTopAskIds() {
   try {
-    const response = yield call(Api.fetchTopAskIds);
+    const response = yield call(Api.fetchStoryIds, 'askstories');
     yield put(getTopAskIdSuccess(response.data));
 
     // Get the first 10 items the first time this saga is called
@@ -31,7 +31,7 @@ export function* getTopAskIds() {
 export function* getToAskItems(action) {
   try {
     const { ids } = action.payload;
-    const response = yield call(Api.fetchTopAsksItems, ids);
+    const response = yield call(Api.fetchStoryItems, ids);
     yield put(getTopAskItemsSuccess(response));
   } catch (error) {
     yield put(getTopAskItemsFailure(error));

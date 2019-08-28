@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Container, Divider, Header, Icon, Table } from 'semantic-ui-react';
 import moment from 'moment';
-const UserDetails = ({ created, id, karma, submitted }) => {
-  const ids = submitted;
-  console.log(ids, 'IDS');
+import dompurify from 'dompurify';
+
+const UserDetails = ({ created, id, karma, about }) => {
+  const sanitizer = dompurify.sanitize;
 
   return (
     <React.Fragment>
@@ -37,7 +37,9 @@ const UserDetails = ({ created, id, karma, submitted }) => {
             <Table.Row>
               <Table.Cell width={2}>About:</Table.Cell>
               <Table.Cell>
-                <Link to={`/userComments`}>Comments</Link>
+                {about ? (
+                  <div dangerouslySetInnerHTML={{__html: sanitizer(about)}} />
+                ) : '--'}
               </Table.Cell>
             </Table.Row>
           </Table.Body>

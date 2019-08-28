@@ -18,7 +18,7 @@ export default function* topStoriesWatcher() {
 
 export function* getTopStoryIds(action) {
   try {
-    const response = yield call(Api.fetchTopStoryIds);
+    const response = yield call(Api.fetchStoryIds, 'topstories');
 
     yield put(getTopStoryIdsSuccess(response.data));
 
@@ -32,7 +32,7 @@ export function* getTopStoryIds(action) {
 export function* getTopStoryItems(action) {
   try {
     const { ids } = action.payload;
-    const response = yield call(Api.fetchTopStoryItems, ids);
+    const response = yield call(Api.fetchStoryItems, ids);
 
     yield put(getTopStoryItemsSuccess(response));
   } catch (error) {

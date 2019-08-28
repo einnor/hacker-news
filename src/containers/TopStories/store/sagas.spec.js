@@ -24,7 +24,7 @@ describe('Top Stories - Sagas', () => {
       const response = {data: [1, 2, 3]};
       return expectSaga(getTopStoryIds, action)
         .provide([
-          [matchers.call(Api.fetchTopStoryIds), response]
+          [matchers.call(Api.fetchStoryIds, 'topstories'), response]
         ])
         .put(actions.getTopStoryIdsSuccess(response.data))
         .run();
@@ -33,7 +33,7 @@ describe('Top Stories - Sagas', () => {
     it('should handle unsuccessfully fetching top story ids', () => {
       return expectSaga(getTopStoryIds, action)
         .provide([
-          [matchers.call(Api.fetchTopStoryIds), Promise.reject(error)]
+          [matchers.call(Api.fetchStoryIds, 'topstories'), Promise.reject(error)]
         ])
         .put(actions.getTopStoryIdsFailure(error))
         .run();
@@ -66,7 +66,7 @@ describe('Top Stories - Sagas', () => {
 
       return expectSaga(getTopStoryItems, action)
         .provide([
-          [matchers.call(Api.fetchTopStoryItems, ids), response]
+          [matchers.call(Api.fetchStoryItems, ids), response]
         ])
         .put(actions.getTopStoryItemsSuccess(response))
         .run();
@@ -75,7 +75,7 @@ describe('Top Stories - Sagas', () => {
     it('should handle unsuccessfully fetching top story items', () => {
       return expectSaga(getTopStoryItems, action)
         .provide([
-          [matchers.call(Api.fetchTopStoryItems, ids), Promise.reject(error)]
+          [matchers.call(Api.fetchStoryItems, ids), Promise.reject(error)]
         ])
         .put(actions.getTopStoryItemsFailure(error))
         .run();
