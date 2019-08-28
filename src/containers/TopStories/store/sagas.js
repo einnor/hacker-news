@@ -16,7 +16,7 @@ export default function* topStoriesWatcher() {
   yield takeLatest(GET_TOP_STORY_ITEMS_REQUEST, getTopStoryItems);
 }
 
-export function* getTopStoryIds() {
+export function* getTopStoryIds(action) {
   try {
     const response = yield call(Api.fetchTopStoryIds);
 
