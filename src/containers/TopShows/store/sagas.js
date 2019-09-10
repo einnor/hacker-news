@@ -18,7 +18,7 @@ export default function* topShowsWatcher() {
 
 export function* getTopShowsIds() {
   try {
-    const response = yield call(Api.fetchTopShowsIds);
+    const response = yield call(Api.fetchStoryIds, 'showstories');
     yield put(getTopShowIdsSuccess(response.data));
     // Get the first 10 items the first time this saga is called
     yield put(getTopShowItemsRequest(response.data.slice(0, 10)));
@@ -29,7 +29,7 @@ export function* getTopShowsIds() {
 export function* getTopShowsItems(action) {
   try {
     const { ids } = action.payload;
-    const response = yield call(Api.fetchTopShowsItems, ids);
+    const response = yield call(Api.fetchStoryItems, ids);
     yield put(getTopShowItemsSuccess(response));
   } catch (error) {
     yield put(getTopShowItemsFailure(error));

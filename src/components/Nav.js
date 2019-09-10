@@ -14,9 +14,6 @@ const Nav = () => {
           <Link to="/ask">Ask</Link>
         </Menu.Item>
         <Menu.Item>
-          <Link to="/jobs">Jobs</Link>
-        </Menu.Item>
-        <Menu.Item>
           <Link to="/shows">Shows</Link>
         </Menu.Item>
       </Menu>

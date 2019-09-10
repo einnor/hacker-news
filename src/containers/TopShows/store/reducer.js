@@ -10,7 +10,7 @@ import {
 export const initialState = {
   ids: [],
   isLoading: false,
-  item: [],
+  items: [],
   isLoadingMore: false,
   error: null
 };
