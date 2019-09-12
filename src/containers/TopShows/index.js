@@ -10,7 +10,13 @@ class TopShows extends React.PureComponent {
   }
 
   render() {
-    const { ids, isLoading, items, isLoadingMore } = this.props;
+    const {
+      ids,
+      isLoading,
+      items,
+      isLoadingMore,
+      getTopShowItemsRequest
+    } = this.props;
 
     return (
       <AppLayout>

@@ -14,7 +14,13 @@ class TopStories extends PureComponent {
   }
 
   render() {
-    const { isLoading, isLoadingMore, ids, items } = this.props;
+    const {
+      isLoading,
+      isLoadingMore,
+      ids,
+      items,
+      getTopStoryItemsRequest
+    } = this.props;
 
     return (
       <AppLayout>
