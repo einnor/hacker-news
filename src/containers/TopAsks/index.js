@@ -14,7 +14,13 @@ class TopAsks extends PureComponent {
   }
 
   render() {
-    const { ids, items, isLoading, isLoadingMore } = this.props;
+    const {
+      ids,
+      items,
+      isLoading,
+      isLoadingMore,
+      getTopAskItemsRequest
+    } = this.props;
 
     return (
       <AppLayout>
