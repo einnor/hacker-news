@@ -6,6 +6,7 @@ import TopAsks from '../TopAsks';
 import User from '../User';
 import { FiltersProvider } from '../../context/FiltersContext';
 import './App.css';
+import TopShows from '../TopShows';
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       <Route path="/items/:id" component={Story} />
       <Route path="/ask" component={TopAsks} />
       <Route path="/user/:id" component={User} />
+      <Route path="/shows" component={TopShows} />
     </FiltersProvider>
   );
 };
