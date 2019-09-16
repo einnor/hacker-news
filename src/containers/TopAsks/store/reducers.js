@@ -7,7 +7,7 @@ import {
   GET_TOP_ASK_ITEMS_FAILURE
 } from './actions';
 
-const initialState = {
+export const initialState = {
   ids: [],
   items: [],
   isLoading: true,
