@@ -8828,10 +8828,10 @@ recursive-readdir@2.2.2:
   dependencies:
     minimatch "3.0.4"
 
-redux-saga-test-plan@^4.0.0-rc.1:
-  version "4.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/redux-saga-test-plan/-/redux-saga-test-plan-4.0.0-rc.1.tgz#f3c4a17b95d080ac640e212312e119dee8020d67"
-  integrity sha512-pCdbQaR1V9ek0Q7Tu4FSWNnVns3tuNqUieyRXIJ95BRmpTqGEAKRUCj5Qkc936y7FT4Cuu7JVN51j972jIh8Fg==
+redux-saga-test-plan@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/redux-saga-test-plan/-/redux-saga-test-plan-4.0.0.tgz#e2549049338d4c5739fcd01512dfe43519d65cd9"
+  integrity sha512-8lNyjdehaRnhoKTV7HRtdPmVGxtOdhnWWATIw9YyqZyzABobJWuy3R3zWSAlP4vZdUI6tXkCexR6KQzwPAyKdg==
   dependencies:
     core-js "^2.4.1"
     fsm-iterator "^1.1.0"
