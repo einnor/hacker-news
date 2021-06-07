@@ -1,5 +1,5 @@
 ## HACKER NEWS
-A social news website focusing on computer science and entrepreneurship
+- A social news website focusing on computer science and entrepreneurship
 
 ## HOW TO RUN THE PROJECT
 In the project directory, you can run:
