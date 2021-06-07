@@ -9,7 +9,6 @@ export class FiltersProvider extends Component {
   };
 
   onFiltersChange = (args) => {
-    // {filter: 'time', sort: 'desc'}, {filter: 'time'}, {sort: 'desc'}
     this.setState({ ...args });
   };
   render() {
